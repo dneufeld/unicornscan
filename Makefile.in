@@ -1,0 +1,44 @@
+# @configure_input@
+include ./Makefile.inc
+
+SUBDIRS=libs etc selinux ext_src src docs
+
+all:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ all || exit 1 && cd ..; \
+	done
+
+install: all
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ install || exit 1 && cd ..; \
+	done
+
+uninstall:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ uninstall || exit 1 && cd ..; \
+	done
+
+slack:
+	./scripts/mkslackpkg
+
+samhain:
+	./scripts/mksamhainpkg
+
+clean:	
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ clean || exit 1 && cd ..; \
+	done
+	rm -rf packages/* src/*build
+
+distclean: clean
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ distclean || exit 1 && cd ..; \
+	done
+	rm -fr Makefile.inc src/compile.h src/config.h src/packageinfo.h autom4te.cache config.log config.status stage packages
+	find . \( -name "cscope.out" -o -name "cppcomplete.tags" -o -name "Makefile" \) -exec rm {} \; -print
+
+dist: distclean
+	./scripts/tarup.sh
+
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) $(BUILD_DIR)/config.status --recheck

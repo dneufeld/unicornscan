@@ -1,0 +1,95 @@
+0000000: 00 a0 c8 12 34 56 00 40 4f 0d fa de 08 00 45 00  ....4V.@O.....E.
+0000010: 05 dc 1b c8 40 00 40 06 47 f5 d0 39 ee d2 d8 ef  ....@.@.G..9....
+0000020: 39 63 80 67 00 50 a1 f5 b4 59 ad ca a0 80 50 10  9c.g.P...Y....P.
+0000030: 16 d0 d7 2d 00 00 47 45 54 20 2f 20 48 54 54 50  ...-..GET / HTTP
+0000040: 2f 31 2e 30 0d 0a 48 6f 73 74 3a 20 67 6f 6f 67  /1.0..Host: goog
+0000050: 6c 65 2e 63 6f 6d 0d 0a 41 63 63 65 70 74 3a 20  le.com..Accept: 
+0000060: 74 65 78 74 2f 68 74 6d 6c 2c 20 74 65 78 74 2f  text/html, text/
+0000070: 70 6c 61 69 6e 2c 20 61 70 70 6c 69 63 61 74 69  plain, applicati
+0000080: 6f 6e 2f 78 2d 6f 67 67 2c 20 61 70 70 6c 69 63  on/x-ogg, applic
+0000090: 61 74 69 6f 6e 2f 6f 67 67 2c 20 74 65 78 74 2f  ation/ogg, text/
+00000a0: 76 6e 64 2e 72 6e 2d 72 65 61 6c 74 65 78 74 2c  vnd.rn-realtext,
+00000b0: 20 69 6d 61 67 65 2f 76 6e 64 2e 72 6e 2d 72 65   image/vnd.rn-re
+00000c0: 61 6c 70 69 78 2c 20 61 70 70 6c 69 63 61 74 69  alpix, applicati
+00000d0: 6f 6e 2f 73 6d 69 6c 2c 20 61 75 64 69 6f 2f 6d  on/smil, audio/m
+00000e0: 70 33 2c 20 61 75 64 69 6f 2f 78 2d 6d 70 33 2c  p3, audio/x-mp3,
+00000f0: 20 61 75 64 69 6f 2f 6d 70 65 67 2c 20 61 75 64   audio/mpeg, aud
+0000100: 69 6f 2f 6d 70 67 2c 20 61 75 64 69 6f 2f 78 2d  io/mpg, audio/x-
+0000110: 6d 70 65 67 2c 20 61 75 64 69 6f 2f 78 2d 6d 70  mpeg, audio/x-mp
+0000120: 67 2c 20 61 75 64 69 6f 2f 6d 70 65 67 75 72 6c  g, audio/mpegurl
+0000130: 2c 20 61 75 64 69 6f 2f 78 2d 6d 70 65 67 75 72  , audio/x-mpegur
+0000140: 6c 2c 20 61 75 64 69 6f 2f 77 61 76 0d 0a 41 63  l, audio/wav..Ac
+0000150: 63 65 70 74 3a 20 61 75 64 69 6f 2f 78 2d 77 61  cept: audio/x-wa
+0000160: 76 2c 20 61 75 64 69 6f 2f 78 2d 70 6e 2d 77 61  v, audio/x-pn-wa
+0000170: 76 2c 20 61 75 64 69 6f 2f 78 2d 70 6e 2d 77 69  v, audio/x-pn-wi
+0000180: 6e 64 6f 77 73 2d 61 63 6d 2c 20 61 75 64 69 6f  ndows-acm, audio
+0000190: 2f 78 2d 70 6e 2d 77 69 6e 64 6f 77 73 2d 70 63  /x-pn-windows-pc
+00001a0: 6d 2c 20 61 70 70 6c 69 63 61 74 69 6f 6e 2f 76  m, application/v
+00001b0: 6e 64 2e 72 6e 2d 72 65 61 6c 6d 65 64 69 61 2d  nd.rn-realmedia-
+00001c0: 73 65 63 75 72 65 2c 20 61 70 70 6c 69 63 61 74  secure, applicat
+00001d0: 69 6f 6e 2f 76 6e 64 2e 72 6e 2d 72 65 61 6c 61  ion/vnd.rn-reala
+00001e0: 75 64 69 6f 2d 73 65 63 75 72 65 2c 20 61 75 64  udio-secure, aud
+00001f0: 69 6f 2f 78 2d 72 65 61 6c 61 75 64 69 6f 2d 73  io/x-realaudio-s
+0000200: 65 63 75 72 65 2c 20 76 69 64 65 6f 2f 76 6e 64  ecure, video/vnd
+0000210: 2e 72 6e 2d 72 65 61 6c 76 69 64 65 6f 2d 73 65  .rn-realvideo-se
+0000220: 63 75 72 65 2c 20 61 75 64 69 6f 2f 76 6e 64 2e  cure, audio/vnd.
+0000230: 72 6e 2d 72 65 61 6c 61 75 64 69 6f 0d 0a 41 63  rn-realaudio..Ac
+0000240: 63 65 70 74 3a 20 61 75 64 69 6f 2f 78 2d 72 65  cept: audio/x-re
+0000250: 61 6c 61 75 64 69 6f 2c 20 61 70 70 6c 69 63 61  alaudio, applica
+0000260: 74 69 6f 6e 2f 76 6e 64 2e 72 6e 2d 72 65 61 6c  tion/vnd.rn-real
+0000270: 6d 65 64 69 61 2c 20 61 70 70 6c 69 63 61 74 69  media, applicati
+0000280: 6f 6e 2f 76 6e 64 2e 72 6e 2d 72 65 61 6c 6d 65  on/vnd.rn-realme
+0000290: 64 69 61 2d 76 62 72 2c 20 61 75 64 69 6f 2f 78  dia-vbr, audio/x
+00002a0: 2d 70 6e 2d 72 65 61 6c 61 75 64 69 6f 2c 20 76  -pn-realaudio, v
+00002b0: 69 64 65 6f 2f 76 6e 64 2e 72 6e 2d 72 65 61 6c  ideo/vnd.rn-real
+00002c0: 76 69 64 65 6f 2c 20 61 70 70 6c 69 63 61 74 69  video, applicati
+00002d0: 6f 6e 2f 76 6e 64 2e 72 6e 2d 72 65 61 6c 73 79  on/vnd.rn-realsy
+00002e0: 73 74 65 6d 2d 72 6d 6a 2c 20 61 70 70 6c 69 63  stem-rmj, applic
+00002f0: 61 74 69 6f 6e 2f 76 6e 64 2e 72 6e 2d 72 65 61  ation/vnd.rn-rea
+0000300: 6c 73 79 73 74 65 6d 2d 72 6d 78 2c 20 61 75 64  lsystem-rmx, aud
+0000310: 69 6f 2f 61 61 63 2c 20 61 75 64 69 6f 2f 6d 34  io/aac, audio/m4
+0000320: 61 2c 20 61 75 64 69 6f 2f 6d 70 32 2c 20 61 75  a, audio/mp2, au
+0000330: 64 69 6f 2f 6d 70 31 0d 0a 41 63 63 65 70 74 3a  dio/mp1..Accept:
+0000340: 20 61 75 64 69 6f 2f 72 6e 2d 6d 70 65 67 2c 20   audio/rn-mpeg, 
+0000350: 61 75 64 69 6f 2f 73 63 70 6c 73 2c 20 61 75 64  audio/scpls, aud
+0000360: 69 6f 2f 78 2d 73 63 70 6c 73 2c 20 61 70 70 6c  io/x-scpls, appl
+0000370: 69 63 61 74 69 6f 6e 2f 73 74 72 65 61 6d 69 6e  ication/streamin
+0000380: 67 6d 65 64 69 61 2c 20 61 70 70 6c 69 63 61 74  gmedia, applicat
+0000390: 69 6f 6e 2f 73 64 70 2c 20 61 70 70 6c 69 63 61  ion/sdp, applica
+00003a0: 74 69 6f 6e 2f 78 2d 73 64 70 2c 20 61 75 64 69  tion/x-sdp, audi
+00003b0: 6f 2f 62 61 73 69 63 2c 20 61 75 64 69 6f 2f 78  o/basic, audio/x
+00003c0: 2d 70 6e 2d 61 75 2c 20 61 75 64 69 6f 2f 61 69  -pn-au, audio/ai
+00003d0: 66 66 2c 20 61 75 64 69 6f 2f 78 2d 61 69 66 66  ff, audio/x-aiff
+00003e0: 2c 20 61 75 64 69 6f 2f 78 2d 70 6e 2d 61 69 66  , audio/x-pn-aif
+00003f0: 66 2c 20 76 69 64 65 6f 2f 33 67 70 70 2c 20 76  f, video/3gpp, v
+0000400: 69 64 65 6f 2f 33 67 70 70 2d 65 6e 63 72 79 70  ideo/3gpp-encryp
+0000410: 74 65 64 2c 20 61 75 64 69 6f 2f 33 67 70 70 2c  ted, audio/3gpp,
+0000420: 20 61 75 64 69 6f 2f 33 67 70 70 2d 65 6e 63 72   audio/3gpp-encr
+0000430: 79 70 74 65 64 0d 0a 41 63 63 65 70 74 3a 20 61  ypted..Accept: a
+0000440: 75 64 69 6f 2f 61 6d 72 2c 20 61 75 64 69 6f 2f  udio/amr, audio/
+0000450: 61 6d 72 2d 65 6e 63 72 79 70 74 65 64 2c 20 61  amr-encrypted, a
+0000460: 75 64 69 6f 2f 61 6d 72 2d 77 62 2c 20 61 75 64  udio/amr-wb, aud
+0000470: 69 6f 2f 61 6d 72 2d 77 62 2d 65 6e 63 72 79 70  io/amr-wb-encryp
+0000480: 74 65 64 2c 20 61 75 64 69 6f 2f 78 2d 72 6e 2d  ted, audio/x-rn-
+0000490: 33 67 70 70 2d 61 6d 72 2c 20 61 75 64 69 6f 2f  3gpp-amr, audio/
+00004a0: 78 2d 72 6e 2d 33 67 70 70 2d 61 6d 72 2d 65 6e  x-rn-3gpp-amr-en
+00004b0: 63 72 79 70 74 65 64 2c 20 61 75 64 69 6f 2f 78  crypted, audio/x
+00004c0: 2d 72 6e 2d 33 67 70 70 2d 61 6d 72 2d 77 62 2c  -rn-3gpp-amr-wb,
+00004d0: 20 61 75 64 69 6f 2f 78 2d 72 6e 2d 33 67 70 70   audio/x-rn-3gpp
+00004e0: 2d 61 6d 72 2d 77 62 2d 65 6e 63 72 79 70 74 65  -amr-wb-encrypte
+00004f0: 64 2c 20 76 69 64 65 6f 2f 33 67 70 70 32 2c 20  d, video/3gpp2, 
+0000500: 74 65 78 74 2f 73 67 6d 6c 2c 20 76 69 64 65 6f  text/sgml, video
+0000510: 2f 6d 70 65 67 2c 20 69 6d 61 67 65 2f 6a 70 65  /mpeg, image/jpe
+0000520: 67 2c 20 69 6d 61 67 65 2f 74 69 66 66 0d 0a 41  g, image/tiff..A
+0000530: 63 63 65 70 74 3a 20 69 6d 61 67 65 2f 78 2d 72  ccept: image/x-r
+0000540: 67 62 2c 20 69 6d 61 67 65 2f 70 6e 67 2c 20 69  gb, image/png, i
+0000550: 6d 61 67 65 2f 78 2d 78 62 69 74 6d 61 70 2c 20  mage/x-xbitmap, 
+0000560: 69 6d 61 67 65 2f 78 2d 78 62 6d 2c 20 69 6d 61  image/x-xbm, ima
+0000570: 67 65 2f 67 69 66 2c 20 61 70 70 6c 69 63 61 74  ge/gif, applicat
+0000580: 69 6f 6e 2f 70 6f 73 74 73 63 72 69 70 74 2c 20  ion/postscript, 
+0000590: 2a 2f 2a 3b 71 3d 30 2e 30 31 0d 0a 41 63 63 65  */*;q=0.01..Acce
+00005a0: 70 74 2d 45 6e 63 6f 64 69 6e 67 3a 20 67 7a 69  pt-Encoding: gzi
+00005b0: 70 2c 20 63 6f 6d 70 72 65 73 73 0d 0a 41 63 63  p, compress..Acc
+00005c0: 65 70 74 2d 4c 61 6e 67 75 61 67 65 3a 20 65 6e  ept-Language: en
+00005d0: 0d 0a 55 73 65 72 2d 41 67 65 6e 74 3a 20 4c 79  ..User-Agent: Ly
+00005e0: 6e 78 2f 32 2e 38 2e 34 72 65                    nx/2.8.4re

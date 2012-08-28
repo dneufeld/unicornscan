@@ -1,0 +1,5 @@
+Please send payloads you have to unicornscan@rapturesecurity.org
+we are currently looking for good oracle, and TACAC probe packets
+Payloads can be in just about any format, with pcap or C style escapes
+of udp data (with normal dest port and src port restrictions) being
+preferred.

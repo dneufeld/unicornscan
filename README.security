@@ -1,0 +1,46 @@
+some random thoughts about security regarding usage of this software
+
+(http://niap.nist.gov/pp/draft_pps/pp_draft_idsscanner_mr_v0.9.html)
+was the protection profile used for some context to the following.
+
+the first point to bring up is that the safe thing to do is (during a scan)
+not to try and process data further than required, so that would mean:
+ a) the report modules should not be enabled, for example the osdetect code should not be
+ available, that processing should happen at the analyzing node.
+
+the output data safety is largely related to the method (output module)
+used to record scan data, so if postgresql was used, the TOE would obviously
+need to include it.
+
+using selinux policy (not the provided policy) greatly helps addressing some
+of the issues faced.
+
+the /proc/ entries, and ptrace functionality should be highly restricted or
+not available.
+
+the recv_packet tcphash function cannot protect against a device being scanned
+from forging replies (correctly) from other hosts, or causing a DoS condition
+in the master process, the function may be changed and kept secret however, its not
+likely this will be a simple problem to solve (however with udp and icmp, the
+problem is much worse, obviously)
+
+the unisend program should not read the configuration file, however it may be
+required for it to load shared library modules, the configuration can be sent
+over ipc. the unilisten process must never be allowed to read configuration data
+or load shared libraries due to the fact that is processing data from the wire,
+in fact it would be best of the pcap logging functionality was moved out of the
+unilisten process and placed somewhere else.
+
+a good method for ipc channels over tcp sockets would be to used labeled ipsec.
+
+a creation of another process to monitor the scanning process and logging information
+about the invoking user and outcome of the scan (error conditions) should be created.
+
+the DAC install should create a group that can read or possibly modify the configuration
+that the "nobody" user can not reach (by default this does not happen)
+
+regarding the containing operating system:
+key generation must not be done during a phase where the prng has not collected enough
+entropy (ie no ssh or ipsec key generation should be allowed during first bootup)
+
+device interaction (/dev/ files) should be highly restricted.

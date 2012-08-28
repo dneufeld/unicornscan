@@ -1,0 +1,14 @@
+%% = %
+%C = Country ( Via GeoIP )
+%h or %hn ip or hostname
+%L or %Ln local port or local service name
+%M link address
+%o mac OUI
+%p or %pn report port or report service name
+%r response type
+%s or %sn source ip or hostname
+%S remote sequence number in hex
+%t ttl
+%T or %Tn trace ip or trace hostname (if different from %h, otherwise nothing)
+%w window size
+

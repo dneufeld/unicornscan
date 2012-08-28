@@ -1,0 +1,24 @@
+diff -ru libdnet-1.8.orig/Makefile.am libdnet-1.8/Makefile.am
+--- libdnet-1.8.orig/Makefile.am	2004-01-03 00:52:22.000000000 -0800
++++ libdnet-1.8/Makefile.am	2004-12-09 16:19:38.000000000 -0800
+@@ -2,7 +2,7 @@
+ 
+ include $(top_srcdir)/Makefile.am.common
+ 
+-SUBDIRS =	include man src python test
++SUBDIRS =	include man src
+ 
+ bin_SCRIPTS =	dnet-config
+ 
+diff -ru libdnet-1.8.orig/Makefile.in libdnet-1.8/Makefile.in
+--- libdnet-1.8.orig/Makefile.in	2004-05-05 19:52:14.000000000 -0700
++++ libdnet-1.8/Makefile.in	2004-12-09 16:19:25.000000000 -0800
+@@ -96,7 +96,7 @@
+ 
+ DISTCLEANFILES = *~
+ 
+-SUBDIRS = include man src python test
++SUBDIRS = include man src
+ 
+ bin_SCRIPTS = dnet-config
+ 

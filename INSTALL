@@ -1,0 +1,177 @@
+Installing Unicornscan
+
+1.1 Introduction
+Unicornscan can be installed from a package for your distribution. This 
+guide is intended for those wishing to manually compile unicornscan for 
+their speciﬁc needs. Use the table of contents to skip directly sections 
+that seem relevant to you. This guide describes how to install unicornscan 
+on most POSIX platforms.
+
+1.1.1
+
+Requirements
+
+Unicornscan is in constant development. We do our best to provide stable 
+releases, but the code relies on speciﬁc libraries to be installed 
+properly on the system. Many of the required libraries are included in the 
+Unicornscan tar ball for convienience. However, if the conﬁgure script 
+ﬁnds an older copy of the same library already installed on your system, 
+it assumes that you intended it to use your previously installed version. 
+This is especially frustrating with libraries such as libpcap. 
+Speciﬁcally, we are currently using the following libraries:
+* libpq (for storing results, required for front-end - comes with PostgreSQL)
+* libdnet-1.11
+* libltdl-1.5.24
+* libpcap-0.9.8
+
+1.2 Installing the Prerequisites
+Though we do try to bundle many of the prerequisite libraries with the tar 
+ball, if you wish to install them system wide, follow the instructions 
+below.
+
+1.2.1
+
+PostgreSQL
+
+A very thorough documentation on installing and compiling PostgreSQL is 
+available at:
+http://www.postgresql.org/docs/8.2/interactive/installation.html
+
+The quick installation is as follows:
+1. Ensure that your OS/Distribution does not have an older version already 
+installed. If it does, uninstall it.
+
+2. Download the source:
+$ wget ftp://ftp.postgresql.org/pub/source/v8.2.5/postgresql-8.2.5.tar.gz
+
+3. Uncompress, change directories, conﬁgure, make:
+$ tar zxvf postgresql-8.2.5.tar.gz; cd postgresql-8.2.5; ./configure; make
+
+4. As a priveldeged user, make install:
+# make install
+
+5. Add a postgres user to the system:
+# adduser postgres
+
+6. Create a directory to store the databases and change ownership to the 
+postgres user:
+# mkdir /usr/local/pgsql/data; chown postgres /usr/local/pgsql/data
+
+7. Become the postgres user:
+# su - postgres
+
+8. As the postgres user, initialize the database and start the database service:
+$ /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+$ /usr/local/pgsql/bin/postmaster -D /usr/local/pgsql/data >logfile 2>&1 &
+
+9. Create a test database and connect to it to verify it is functioning 
+properly:
+$ /usr/local/pgsql/bin/createdb test
+$ /usr/local/pgsql/bin/psql test
+
+Once PostgreSQL is installed, don’t worry about conﬁguring additional 
+users, databases, tables, etc. That will be documented later in the 1.6 
+(Getting the Front-End Working) section.
+
+1.2.2
+
+libdnet
+
+1. Ensure that your OS/Distribution does not have an older version already 
+installed. If it does, uninstall it.
+
+2. Download the source:
+$ wget http://easynews.dl.sourceforge.net/sourceforge/libdnet/libdnet-1.11.tar.gz
+
+3. Uncompress, change directories, conﬁgure, make
+$ tar zxvf libdnet-1.11.tar.gz; cd libdnet-1.11; ./configure; make
+
+4. As a priveldeged user, make install:
+# make install
+
+1.2.3
+
+libpcap
+
+1. Ensure that your OS/Distribution does not have an older version already 
+installed. If it does, uninstall it.
+
+2. Download the source:
+$ wget http://www.tcpdump.org/release/libpcap-0.9.8.tar.gz
+
+3. Uncompress, change directories, conﬁgure, make
+$ tar zxvf libpcap-0.9.8.tar.gz; cd libpcap-0.9.8; ./configure; make
+
+4. As a priveldeged user, make install:
+# make install
+
+1.3 Installing Unicornscan
+1.3.1 Command-line and Front-End
+
+Unicornscan can be used solely from the command-line, but this guide will 
+also detail how to use it with a PostgreSQL powered Front-End to get the 
+most out of the data collected.
+
+1.3.2
+
+Downloading Unicornscan
+
+unicornscan.org is the ofﬁcial source for downloading unicornscan source 
+code and binaries for unicornscan. Source code is distributed in Gzip 
+compressed tar ﬁles, and binaries are available for Linux (.tgz format). 
+Find all of this at http://www.unicornscan.org/download.html.
+
+1.4 Customized UNIX Compilation and installation from source code
+
+Source installation is intended to be a painless process. The build system 
+is designed to auto-detect as much as possible. Here are the steps 
+required for a default install:
+
+1. Download the latest version of Unicornscan from 
+http://www.unicornscan.org/
+$ wget http://www.unicornscan.org/releases/unicornscan-latest.tar.bz2
+
+2. Decompress the downloaded tarball with a command such as:
+$ tar jxvf unicornscan-latest.tar.bz2
+
+3. Change into the newly created directory:
+$ cd unicornscan-VERSION
+
+4. Conﬁgure the build system:
+$ ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+  --enable-bundled-ltdl --with-pgsql
+
+Run ./configure --help for more information about the options shown (or 
+read below). *Note*: The --with-pgsql option requires that you have the 
+PostgreSql installed, and assumes you have a functional installation
+in place. If you need assistance installing, Postgres, see the section
+on installing prerequisite software.
+
+5. Build Unicornscan:
+$ make
+
+Note that GNU Make is required. On BSD-derived UNIX systems, this is often 
+installed as gmake. So if make returns a bunch of errors such as 
+”Makefile, line 1: Need an operator”, try running gmake instead.
+
+6. As a privledged user, install Unicornscan, support ﬁles, docs, etc.:
+# make install
+
+Congratulations! Unicornscan is now installed as /usr/bin/unicornscan! Run 
+it with the -h ﬂag for a quick help screen.  Also see the 
+docs/Unicornscan-Getting_Started.pdf file for examples on how to use 
+Unicornscan.
+
+7. To uninstall:
+# make uninstall
+
+1.5 Compilation Problems
+If you run into trouble getting it compiled, feel free to jump onto IRC 
+(efnet) on channel #unicornscan. Optionally you can also send an email to 
+the OSACE mailing list, or try to install a precompilied binary package.
+
+1.6 Getting the Front-End Working
+To get the Front-End up and running, you will also need to install:
+* PostgreSQL
+* Apache
+* mod_php

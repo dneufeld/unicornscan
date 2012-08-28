@@ -1,0 +1,62 @@
+#!/bin/sh -x
+
+# when release version is 1.0 then change true to strip
+strip=true
+
+case $0 in
+*samhain*)
+	dist=samhain
+	selinux=yes
+	;;
+*slack*)
+	dist=slackware
+	selinux=no
+	;;
+*)
+	echo unknown distro
+	exit 1
+	;;
+esac
+
+# a safe location
+PKGBDIR=`pwd`/stage
+
+export dist selinux strip PKGBDIR
+
+mkdir -p packages/${dist}
+
+rm -rf $PKGBDIR && mkdir -m 755 $PKGBDIR 2>/dev/null
+
+if [ ! -f src/${dist}build ]
+then
+	rm src/*build
+	CFLAGS="-march=i486 -mcpu=i686 -O2 -g" ./configure --prefix=/usr --mandir=/usr/man --sysconfdir=/etc --localstatedir=/var --with-selinux=$selinux --with-libdnet=no --enable-bundled-ltdl --enable-static=no i486-${dist}-linux
+	make clean && make
+	touch src/${dist}build
+fi
+
+VERSION=`grep "#define VERSION" src/packageinfo.h | awk '{print $3}' | sed 's/"//g'`
+
+DESTDIR=$PKGBDIR make install
+
+find $PKGBDIR/usr/man -name "*.[1-9]" -exec gzip -9 {} \;
+find $PKGBDIR/usr/lib/unicornscan -name "*.a" -exec rm {} \;
+(cd $PKGBDIR
+chgrp bin usr/bin
+cd usr/bin && $strip * && chown root:bin *
+)
+
+(cd $PKGBDIR
+cd usr/libexec/unicornscan && $strip uni*
+)
+
+(cd $PKGBDIR
+mkdir install && cat <<EOF > install/slack-desc
+unicornscan: unicornscan
+unicornscan:
+unicornscan: unicornscan is an enhanced network scanning utility
+unicornscan:
+unicornscan:
+EOF
+makepkg -l y -c n ../packages/${dist}/unicornscan-${VERSION}-i486-1.tgz
+)

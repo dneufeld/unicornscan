@@ -1,0 +1,207 @@
+\documentclass[english]{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage{latex2man}
+\usepackage{babel}
+\usepackage{verbatim}
+
+\input{vars.tex}
+
+\setDate{03/30/05}
+\setVersion{0.4.6b}
+
+\begin{document}
+
+% \begin{Name}{chapter}{name}{author}{info}{title}
+\begin{Name}{1}{unicornscan}{Jack}{Network Tools}{unicornscan command documentation}
+%%%%%%%%%%
+
+\Prog{unicornscan} Version \Version\ is a asynchronous network stimulus delivery/response recoring
+tool.
+
+\end{Name}
+
+\section{Synopsis}
+%%%%%%%%%%
+
+\Prog{unicornscan}
+\oOptArg{-b, --broken-crc    }{layer}
+\oOptArg{-B, --source-port   }{port}
+\oOptArg{-d, --delay-type    }{type}
+   \oOpt{-D, --no-defpayload }
+\oOptArg{-e, --enable-module }{modules}
+   \oOpt{-E, --proc-errors   }
+   \oOpt{-F, --try-frags     }
+\oOptArg{-G, --payload-group }{group}
+   \oOpt{-h, --help          }
+   \oOpt{-H, --do-dns        }
+\oOptArg{-i, --interface     }{interface}
+   \oOpt{-I, --immediate     }
+\oOptArg{-j, --ignore-seq    }{ignore}
+\oOptArg{-l, --logfile       }{file}
+\oOptArg{-L, --packet-timeout}{delay}
+\oOptArg{-m, --mode          }{mode}
+\oOptArg{-M, --module-dir    }{directory}
+\oOptArg{-p, --ports         }{string}
+\oOptArg{-P, --pcap-filter   }{filter}
+\oOptArg{-q, --covertness    }{covertness}
+   \oOpt{-Q, --quiet         }
+\oOptArg{-r, --pps           }{rate}
+\oOptArg{-R, --repeats       }{repeats}
+\oOptArg{-s, --source-addr   }{address}
+   \oOpt{-S, --no-shuffle    }
+\oOptArg{-t, --ip-ttl        }{TTL}
+\oOptArg{-T, --ip-tos        }{TOS}
+\oOptArg{-w, --safefile      }{file}
+\oOptArg{-W, --fingerprint   }{fingerprint}
+   \oOpt{-v, --verbose       }
+   \oOpt{-V, --version       }
+   \oOpt{-z, --sniff         }
+\oOptArg{-Z, --drone-type    }{type}
+    \Arg{target list}
+
+\section{Description}
+%%%%%%%%%%
+
+\Prog{unicornscan}:
+	...
+
+\section{Options}
+%%%%%%%%%%
+\begin{Description}
+\item[\oOptArg{-b, --broken-crc      }{Layer}]
+Break CRC sums on the following layers. N and T are valid, and both may be used without separator,
+so NT would indicate both Network and Transport layers are to have invalid checksums.
+\item[\oOptArg{-B, --source-port     }{Port}]
+Source port for sent packets, numeric value -1 means to use a random source port (the default situation),
+and other valid settings are 0 to 65535. normally this option will not be used, but sometimes it is useful to say
+scan from port 53 into a network.
+\item[\oOptArg{-d, --delay-type      }{Type}]
+Specify the timer used for pps calculations, the default is variable and will try and use something appropriate
+for the rate you have selected. Note however, if available, the tsc timer and the gtod timer are very CPU intensive.
+if you require unicornscan to not monopolize your system while running, consider using the sleep timer, normally 3.
+it has been observed that the tsc timer and gtod timer are required for high packet rates, however this is highly
+system dependent, and should be tested on each hardware/platform combination. The tsc timer may not be available
+on every cpu. The sleep timer module is not recommended for scans where utmost accuracy is required.
+\item[\oOpt{-D, --no-defpayload   }]
+Do not use default payloads when one cannot be found.
+\item[\oOptArg{-e, --enable-module   }{List}]
+A comma separated list of modules to activate (note: payload modules do not require explicit activation, as they are
+enabled by default). an example would be `pgsqldb,foomod'.
+\item[   \oOpt{-E, --proc-errors     }]
+Enable processing of errors such as icmp error messages and reset+ack messages (for example). If this option is set
+then you will see responses that may or may not indicate the presence of a firewall, or other otherwise missed
+information.
+\item[   \oOpt{-F, --try-frags       }]
+It is likely that this option doesn't work, don't bother using it until it is fixed.
+\item[\oOptArg{-G, --payload-group   }{Group}]
+activate payloads only from this numeric payload group. The default payload group is 1.
+\item[   \oOpt{-h, --help            }]
+if you don't know what this means, perhaps you should consider not using this program.
+\item[   \oOpt{-H, --do-dns          }]
+Resolve dns hostnames before and after the scan (but not during, as that would likely cause superfluous spurious
+responses during the scan, especially if udp scanning). the hosts that will be resolved are (in order of resolution)
+the low and high addresses of the range, and finally each host address that replied with something that would be
+visible depending on other scan options. This option is not recommended for use during scans where utmost accuracy
+is required.
+\item[\oOptArg{-i, --interface       }{Interface}]
+string representation of the interface to use, overriding automatic detection.
+\item[   \oOpt{-I, --immediate       }]
+Display results immediately as they are found in a sort of meta report format (read: terse). This option is not
+recommended for use during scans where the utmost accuracy is required.
+\item[\oOptArg{-j, --ignore-seq      }{Type}]
+A string representing the intended sequence ignorance level. This affects the tcp header validity checking, normally
+used to filter noise from the scan. If for example you wish to see reset packets with an ack+seq that is not set
+or perhaps intended for something else appropriate use of this option would be R. A is normally used for more exotic
+tcp scanning. normally the R option is associated with reset scanning.
+\item[\oOptArg{-l, --logfile         }{File}]
+Path to a file where flat text will be dumped that normally would go to the users terminal. A limitation of this option
+currently is that it only logs the output of the `Main' thread and not the sender and receiver.
+\item[\oOptArg{-L, --packet-timeout  }{Seconds}]
+Numeric value representing the number of seconds to wait before declaring the scan over. for connect scans sometimes
+this option can be adjusted to get more accurate results, or if scanning a high-latency target network; for example.
+\item[\oOptArg{-m, --mode            }{Mode}]
+String representation of the desired scanning mode. Correct usage includes U, T, A and sf for Udp scanning, Tcp scanning, Arp scanning, and Tcp Connect scanning respectively.
+\item[\oOptArg{-M, --module-dir      }{Directory}]
+Path to a directory containing shared object `modules' for unicornscan to search.
+\item[\oOptArg{-p, --ports           }{Ports}]
+A global list of ports to scan, can be overridden in the target specification on a per target basis.
+\item[\oOptArg{-P, --pcap-filter     }{Filter}]
+A pcap filter string to add to the listeners default pcap filter (that will be associated with the scan mode being used).
+\item[\oOptArg{-c, --covertness      }{Level}]
+Numeric option that currently does nothing, except look cool.
+\item[   \oOpt{-Q, --quiet           }]
+This option is intended to make unicornscan play the `quiet game'. If you are unfamiliar with its rules, consult with
+someone else who finds you irritating.
+\item[\oOptArg{-r, --pps             }{Rate}]
+This is arguably the most important option, it is a numeric option containing the desired packets per second for the
+sender to use. choosing a rate too high will cause your scan results to be incomplete. choosing a rate too low will
+likely make you feel as though you are using nmap.
+\item[\oOptArg{-R, --repeats         }{Times}]
+The number of times to completely repeat the senders workload, this option is intended to improve accuracy during
+critical scans, or with scans going over a highly unreliable network.
+\item[\oOptArg{-s, --source-addr     }{Address}]
+The address to use to override the listeners default interfaces address. using this option often necessitates using
+the helper program \Cmd{fantaip}{1} to make sure the replies are routed back to the interface the listener has open.
+\item[   \oOpt{-S, --no-shuffle      }]
+..
+\item[\oOptArg{-t, --ip-ttl          }{Number}]
+..
+\item[\oOptArg{-T, --ip-tos          }{Number}]
+..
+\item[\oOptArg{-w, --savefile        }{File}]
+..
+\item[\oOptArg{-W, --fingerprint     }{Type}]
+..
+\item[   \oOpt{-v, --verbose         }]
+..
+\item[   \oOpt{-V, --version         }]
+..
+\item[   \oOpt{-z, --sniff           }]
+..
+\item[\oOptArg{-Z, --drone-type      }{Type}]
+..
+\end{Description}
+
+\section{Examples}
+%%%%%%%%%%
+\begin{Description}
+\textbf{unicornscan -msf -s 5.4.3.2 -r 340 -Iv -epgsqldb www.domain.tld/21:80,8080,443,81}
+runs unicornscan in connect mode with an apparent (to the target) source address of 5.4.3.2 at a rate
+of 340 packets per second. results will be displayed as they are found \emph{-I} and the output
+will be verbose \emph{-v}. The module `pgsqldb' will be activated \emph{-epgsqldb} and
+the target of this scan will be the /21 network that host www.domain.tld belongs to making attempts
+to connect to port 80, 8080, 443 and 81.
+\end{Description}
+
+\section{Files}
+%%%%%%%%%%
+\begin{Description}
+\item[\File{unicorn.conf}] The file containing the default configuration options for usage.
+\item[\File{modules.conf}] The default file for module parameters.
+\item[\File{oui.txt}] Contains the MAC prefix to vendor mapping used in Ethernet scanning.
+\item[\File{payloads.conf}] The default file for tcp and udp payloads.
+\item[\File{ports.txt}] The protocol/port number to name mapping.
+\end{Description}
+
+\section{See Also}
+%%%%%%%%%%
+\Cmd{fantaip}{1} \Cmd{unicfgtst}{1} \Cmd{unicycle}{1} \Cmd{unibrow}{1} \Cmd{unicorn.conf}{5}
+
+\section{Reporting Bugs}
+%%%%%%%%%%
+\begin{description}
+Report Bugs to osace-users@lists.sourceforge.net
+\end{description}
+
+\section{Copyright}
+%%%%%%%%%%
+\begin{description}
+\copyright\ 2004 Jack Louis \Email{jack@rapturesecurity.org}
+This is free software; see the source for  copying  conditions.  There is NO warranty; not even for
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+\end{description}
+
+\LatexManEnd
+
+\end{document}

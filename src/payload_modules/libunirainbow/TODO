@@ -1,0 +1,8 @@
+Compress shellcode and decode with xor loader
+fix jmpsled thingy to be a little less retarded
+nop generation can use work
+alpha encoder isnt done
+prand needs to be registered with an instance, so that the user can overwrite hooks with their own prng
+ppc, sparc, alpha, mips (heh, little or big endian too!), s390 and pa-risc ports and 64 bit variants of popular cpus
+make a tetris payload, cause that would be awesome.
+learn python so i can finish the python port ;]

@@ -1,0 +1,4 @@
+Thu Dec 20 15:37:29 CET 2007:
+* Updated the build system to properly build the postgres output module.
+* Added the unicornscan -> us symlink.
+* Updated the Unicornscan-Getting_Started.pdf documentation.

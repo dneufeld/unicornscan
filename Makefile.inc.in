@@ -1,0 +1,50 @@
+# @configure_input@
+
+BUILD_DIR=@abs_top_srcdir@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libexecdir=@libexecdir@
+localstatedir=@localstatedir@
+libdir=@libdir@
+sysconfdir=@sysconfdir@
+datadir=@datadir@
+docdir=@datadir@/doc
+mandir=@mandir@
+
+@SET_MAKE@
+
+MODDIR=@libdir@/@targetname@/modules
+DESTDIR ?= @DESTDIR@
+TARGETNAME=@targetname@
+
+COPTS=@U_COPTS@
+CDEFS=@U_CDEFS@ $(DEFS) -DLIBDIR=\"@libdir@\" -DSYSCONFDIR=\"@sysconfdir@\" -DLIBEXECDIR=\"@libexecdir@\" -DLOCALSTATEDIR=\"@localstatedir@\" -DPROGNAME=\"@PACKAGE_NAME@\"
+CINCS=@U_CINCS@ -I$(BUILD_DIR)/src -I$(BUILD_DIR)/libs/fake/include -I$(BUILD_DIR)/ext_src
+LDFLAGS=@U_LDFLAGS@ @U_LIBS@ -luext @LIBS@ -L$(BUILD_DIR)/libs/fake/lib -L$(BUILD_DIR)/ext_src
+
+CC=@CC@
+CFLAGS=$(COPTS) $(CDEFS) $(CINCS) $(CDEPS)
+SHELL=@SHELL@
+
+#LIBTOOL_DEPS=@LIBTOOL_DEPS@
+LIBTOOL=$(SHELL) $(BUILD_DIR)/libtool --quiet
+
+USE_MAKE=@USE_MAKE@
+AR=ar
+ARFLAGS=cru
+AWK=@AWK@
+LN=@LN_S@
+RANLIB=@RANLIB@
+EGREP=@EGREP@
+CHCON=@CHCON@
+BISON=bison -d
+FLEX=flex -s -B
+INSTALL=@INSTALL@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+
+MODCLFLAGS=-module -export-dynamic -rpath $(MODDIR) -avoid-version
+
+%.lo: %.c
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -c $<

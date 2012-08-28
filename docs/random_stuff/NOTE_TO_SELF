@@ -1,0 +1,13 @@
+gmake isnt there, but configure thinks it is, why? (osx)
+fc -p invalid ....
+
+!!!! suseseconds_t dont define untill last minute
+!!!! TH_? Warnings
+
+x86_xor - pointers....
+httpexp.c -- ditto
+
+docs - NO LATEX required
+
+osx wants
+setgid, setegid, setuid, seteuid in that order

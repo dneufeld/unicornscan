@@ -1,0 +1,28 @@
+include ../../Makefile.inc
+
+SUBDIRS=database
+
+all:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ all || exit 1 && cd ..;\
+	done
+
+clean:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ clean || exit 1 && cd ..;\
+	done
+
+distclean:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ distclean || exit 1 && cd ..;\
+	done
+
+install:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ install || exit 1 && cd ..;\
+	done
+
+uninstall:
+	@for g in $(SUBDIRS); do \
+		cd $$g && @USE_MAKE@ uninstall || exit 1 && cd ..;\
+	done

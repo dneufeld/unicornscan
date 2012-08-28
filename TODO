@@ -1,0 +1,45 @@
+before release: 
+
+Unicornscan Wish list:
+1. check boxes on search results
+   a) ability to "select all" (ie check all boxes) after narrowing down the search
+     i) ability to delete selected results
+    ii) ability to select port:ip combinations for use in findings database
+2. better search capabilities
+3. ability to add notes to individual items
+4. ability to manually add/modify banner information
+5. case insensitive banner searching
+
+tester flag for non brain dead terms
+icmp scanning (no problem, itll be easy)?
+pause and resume (pcap file stuff) (no changing things like sending ip and expecting it to be accurate anymore... obviously)
+replay from pcap file fixes
+ttl scans (flag for starting ttl to make it faster)
+log how much done, with estimate of time left
+close modules in places where they are not needed (audit this, fd leaks)
+multiple source spoofing (decoys too)
+scan module for tcp seq and ipid predictability
+frag scanning, with multiple ways to frag (there are some larger changes that need to happen first however...)
+compile and work on the following systems:
+ b) OS's: FreeBSD / NetBSD / Linux / Darwin / solaris
+ d) cpus: ppc / sparc / pentium
+
+later on:
+port knocking stuff
+shroud detection (tcp options, delay, DF, etc...)
+
+auto rate scanning (-a for finding out what seems to be a good rate to use, then display it and quit)
+"it would be a REALLY killer feature to have a -l "logistics and controls" option"
+"that would start slower and and work it's way up until the replies got really bad"
+"like. have it have a user specified "control" site"
+"and when you could no longer reach the control site, you knew you needed to back it off."
+"then have it report the max pps rate to specify to not kill yourself"
+"and have that be a conservative number
+
+idle scanning is totally gone, make work
+ip scanning? (payloads...)
+display on different host
+scriptable scanning support
+# this stuff is LOW prio...
+fix strength of tcp syn cookies...
+protocol parsing to correctly label tftp for example

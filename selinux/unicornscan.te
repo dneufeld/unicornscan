@@ -1,0 +1,21 @@
+#DESC unicornscan - Network scanning
+#
+# Authors:  Jack <jack@rapturesecurity.org>
+
+#
+# Rules for the unicornscan_t domain.
+#
+type unicornscan_exec_t, file_type, sysadmfile, exec_type;
+type unisend_exec_t, file_type, sysadmfile, exec_type;
+type unilisten_exec_t, file_type, sysadmfile, exec_type;
+
+type unicornscan_share_t, file_type, sysadmfile;
+type unicornscan_log_t, file_type, sysadmfile;
+type unicornscan_var_t, file_type, sysadmfile;
+# unix domain sockets
+type unicornscan_ipc_t, file_type, sysadmfile;
+
+type unicornscan_port_t, port_type;
+
+# remind me to change the combination on my luggage
+#portcon tcp 1234 system_u:object_r:unicornscan_port_t

@@ -1,0 +1,243 @@
+'\" t
+.\" Manual page created with latex2man on Tue Dec 20 20:16:14 PST 2005
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "UNICORNSCAN" "1" "03/30/05" "Network Tools " "Network Tools "
+.SH NAME
+
+.PP
+unicornscan
+Version 0.4.6b is a asynchronous network stimulus delivery/response recoring 
+tool. 
+.PP
+.SH SYNOPSIS
+
+.PP
+unicornscan
+[\fB\-b, \-\-broken\-crc \fP\fIlayer\fP]
+[\fB\-B, \-\-source\-port \fP\fIport\fP]
+[\fB\-d, \-\-delay\-type \fP\fItype\fP]
+[\fB\-D, \-\-no\-defpayload \fP]
+[\fB\-e, \-\-enable\-module \fP\fImodules\fP]
+[\fB\-E, \-\-proc\-errors \fP]
+[\fB\-F, \-\-try\-frags \fP]
+[\fB\-G, \-\-payload\-group \fP\fIgroup\fP]
+[\fB\-h, \-\-help \fP]
+[\fB\-H, \-\-do\-dns \fP]
+[\fB\-i, \-\-interface \fP\fIinterface\fP]
+[\fB\-I, \-\-immediate \fP]
+[\fB\-j, \-\-ignore\-seq \fP\fIignore\fP]
+[\fB\-l, \-\-logfile \fP\fIfile\fP]
+[\fB\-L, \-\-packet\-timeout\fP\fIdelay\fP]
+[\fB\-m, \-\-mode \fP\fImode\fP]
+[\fB\-M, \-\-module\-dir \fP\fIdirectory\fP]
+[\fB\-p, \-\-ports \fP\fIstring\fP]
+[\fB\-P, \-\-pcap\-filter \fP\fIfilter\fP]
+[\fB\-q, \-\-covertness \fP\fIcovertness\fP]
+[\fB\-Q, \-\-quiet \fP]
+[\fB\-r, \-\-pps \fP\fIrate\fP]
+[\fB\-R, \-\-repeats \fP\fIrepeats\fP]
+[\fB\-s, \-\-source\-addr \fP\fIaddress\fP]
+[\fB\-S, \-\-no\-shuffle \fP]
+[\fB\-t, \-\-ip\-ttl \fP\fITTL\fP]
+[\fB\-T, \-\-ip\-tos \fP\fITOS\fP]
+[\fB\-w, \-\-safefile \fP\fIfile\fP]
+[\fB\-W, \-\-fingerprint \fP\fIfingerprint\fP]
+[\fB\-v, \-\-verbose \fP]
+[\fB\-V, \-\-version \fP]
+[\fB\-z, \-\-sniff \fP]
+[\fB\-Z, \-\-drone\-type \fP\fItype\fP]
+\fItarget list\fP
+.PP
+.SH DESCRIPTION
+
+.PP
+unicornscan:
+\&.\&.\&. 
+.PP
+.SH OPTIONS
+
+.TP
+[\fB\-b, \-\-broken\-crc \fP\fILayer\fP]
+ Break CRC sums on the following layers. N and T are valid, and both may be used without separator, 
+so NT would indicate both Network and Transport layers are to have invalid checksums. 
+.TP
+[\fB\-B, \-\-source\-port \fP\fIPort\fP]
+ Source port for sent packets, numeric value \-1 means to use a random source port (the default situation), 
+and other valid settings are 0 to 65535. normally this option will not be used, but sometimes it is useful to say 
+scan from port 53 into a network. 
+.TP
+[\fB\-d, \-\-delay\-type \fP\fIType\fP]
+ Specify the timer used for pps calculations, the default is variable and will try and use something appropriate 
+for the rate you have selected. Note however, if available, the tsc timer and the gtod timer are very CPU intensive. 
+if you require unicornscan to not monopolize your system while running, consider using the sleep timer, normally 3. 
+it has been observed that the tsc timer and gtod timer are required for high packet rates, however this is highly 
+system dependent, and should be tested on each hardware/platform combination. The tsc timer may not be available 
+on every cpu. The sleep timer module is not recommended for scans where utmost accuracy is required. 
+.TP
+[\fB\-D, \-\-no\-defpayload \fP]
+ Do not use default payloads when one cannot be found. 
+.TP
+[\fB\-e, \-\-enable\-module \fP\fIList\fP]
+ A comma separated list of modules to activate (note: payload modules do not require explicit activation, as they are 
+enabled by default). an example would be `pgsqldb,foomod\&'\&. 
+.TP
+[\fB\-E, \-\-proc\-errors \fP]
+ Enable processing of errors such as icmp error messages and reset+ack messages (for example). If this option is set 
+then you will see responses that may or may not indicate the presence of a firewall, or other otherwise missed 
+information. 
+.TP
+[\fB\-F, \-\-try\-frags \fP]
+ It is likely that this option doesn\&'t work, don\&'t bother using it until it is fixed. 
+.TP
+[\fB\-G, \-\-payload\-group \fP\fIGroup\fP]
+ activate payloads only from this numeric payload group. The default payload group is 1. 
+.TP
+[\fB\-h, \-\-help \fP]
+ if you don\&'t know what this means, perhaps you should consider not using this program. 
+.TP
+[\fB\-H, \-\-do\-dns \fP]
+ Resolve dns hostnames before and after the scan (but not during, as that would likely cause superfluous spurious 
+responses during the scan, especially if udp scanning). the hosts that will be resolved are (in order of resolution) 
+the low and high addresses of the range, and finally each host address that replied with something that would be 
+visible depending on other scan options. This option is not recommended for use during scans where utmost accuracy 
+is required. 
+.TP
+[\fB\-i, \-\-interface \fP\fIInterface\fP]
+ string representation of the interface to use, overriding automatic detection. 
+.TP
+[\fB\-I, \-\-immediate \fP]
+ Display results immediately as they are found in a sort of meta report format (read: terse). This option is not 
+recommended for use during scans where the utmost accuracy is required. 
+.TP
+[\fB\-j, \-\-ignore\-seq \fP\fIType\fP]
+ A string representing the intended sequence ignorance level. This affects the tcp header validity checking, normally 
+used to filter noise from the scan. If for example you wish to see reset packets with an ack+seq that is not set 
+or perhaps intended for something else appropriate use of this option would be R. A is normally used for more exotic 
+tcp scanning. normally the R option is associated with reset scanning. 
+.TP
+[\fB\-l, \-\-logfile \fP\fIFile\fP]
+ Path to a file where flat text will be dumped that normally would go to the users terminal. A limitation of this option 
+currently is that it only logs the output of the `Main\&' thread and not the sender and receiver. 
+.TP
+[\fB\-L, \-\-packet\-timeout \fP\fISeconds\fP]
+ Numeric value representing the number of seconds to wait before declaring the scan over. for connect scans sometimes 
+this option can be adjusted to get more accurate results, or if scanning a high\-latency target network; for example. 
+.TP
+[\fB\-m, \-\-mode \fP\fIMode\fP]
+ String representation of the desired scanning mode. Correct usage includes U, T, A and sf for Udp scanning, Tcp scanning, Arp scanning, and Tcp Connect scanning respectively. 
+.TP
+[\fB\-M, \-\-module\-dir \fP\fIDirectory\fP]
+ Path to a directory containing shared object `modules\&' for unicornscan to search. 
+.TP
+[\fB\-p, \-\-ports \fP\fIPorts\fP]
+ A global list of ports to scan, can be overridden in the target specification on a per target basis. 
+.TP
+[\fB\-P, \-\-pcap\-filter \fP\fIFilter\fP]
+ A pcap filter string to add to the listeners default pcap filter (that will be associated with the scan mode being used). 
+.TP
+[\fB\-c, \-\-covertness \fP\fILevel\fP]
+ Numeric option that currently does nothing, except look cool. 
+.TP
+[\fB\-Q, \-\-quiet \fP]
+ This option is intended to make unicornscan play the `quiet game\&'\&. If you are unfamiliar with its rules, consult with 
+someone else who finds you irritating. 
+.TP
+[\fB\-r, \-\-pps \fP\fIRate\fP]
+ This is arguably the most important option, it is a numeric option containing the desired packets per second for the 
+sender to use. choosing a rate too high will cause your scan results to be incomplete. choosing a rate too low will 
+likely make you feel as though you are using nmap. 
+.TP
+[\fB\-R, \-\-repeats \fP\fITimes\fP]
+ The number of times to completely repeat the senders workload, this option is intended to improve accuracy during 
+critical scans, or with scans going over a highly unreliable network. 
+.TP
+[\fB\-s, \-\-source\-addr \fP\fIAddress\fP]
+ The address to use to override the listeners default interfaces address. using this option often necessitates using 
+the helper program \fIfantaip\fP(1)
+to make sure the replies are routed back to the interface the listener has open. 
+.TP
+[\fB\-S, \-\-no\-shuffle \fP]
+ \&.\&. 
+.TP
+[\fB\-t, \-\-ip\-ttl \fP\fINumber\fP]
+ \&.\&. 
+.TP
+[\fB\-T, \-\-ip\-tos \fP\fINumber\fP]
+ \&.\&. 
+.TP
+[\fB\-w, \-\-savefile \fP\fIFile\fP]
+ \&.\&. 
+.TP
+[\fB\-W, \-\-fingerprint \fP\fIType\fP]
+ \&.\&. 
+.TP
+[\fB\-v, \-\-verbose \fP]
+ \&.\&. 
+.TP
+[\fB\-V, \-\-version \fP]
+ \&.\&. 
+.TP
+[\fB\-z, \-\-sniff \fP]
+ \&.\&. 
+.TP
+[\fB\-Z, \-\-drone\-type \fP\fIType\fP]
+ \&.\&. 
+.PP
+.SH EXAMPLES
+
+\fBunicornscan \-msf \-s 5.4.3.2 \-r 340 \-Iv \-epgsqldb www.domain.tld/21:80,8080,443,81\fP
+runs unicornscan in connect mode with an apparent (to the target) source address of 5.4.3.2 at a rate 
+of 340 packets per second. results will be displayed as they are found \fI\-I\fP
+and the output 
+will be verbose \fI\-v\fP\&.
+The module `pgsqldb\&' will be activated \fI\-epgsqldb\fP
+and 
+the target of this scan will be the /21 network that host www.domain.tld belongs to making attempts 
+to connect to port 80, 8080, 443 and 81. 
+.PP
+.SH FILES
+
+.TP
+unicorn.conf
+ The file containing the default configuration options for usage. 
+.TP
+modules.conf
+ The default file for module parameters. 
+.TP
+oui.txt
+ Contains the MAC prefix to vendor mapping used in Ethernet scanning. 
+.TP
+payloads.conf
+ The default file for tcp and udp payloads. 
+.TP
+ports.txt
+ The protocol/port number to name mapping. 
+.PP
+.SH SEE ALSO
+
+\fIfantaip\fP(1)
+\fIunicfgtst\fP(1)
+\fIunicycle\fP(1)
+\fIunibrow\fP(1)
+\fIunicorn.conf\fP(5)
+.PP
+.SH REPORTING BUGS
+
+Report Bugs to osace\-users@lists.sourceforge.net 
+.PP
+.SH COPYRIGHT
+
+(C)2004 Jack Louis \fBjack@rapturesecurity.org\fP
+This is free software; see the source for copying conditions. There is NO warranty; not even for 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

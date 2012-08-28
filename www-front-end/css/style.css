@@ -1,0 +1,124 @@
+/*
+ * the point of this CSS is to make people
+ * a) depressed with the dark colors
+ * b) insane with all the variants of the same bad colors
+ */
+
+html, body {
+	font-weight: normal;
+	font-family: verdana, sans-serif;
+	background: #000000;
+	color: #FFFFFF;
+	margin: 0px;
+}
+
+body,table,tr,th,td,div,p,a,font,span,h2,h3,h4,ul,li,input,html {
+	font-family: verdana, sans-serif;
+	font-size: 10pt;
+}
+
+.hexdump {
+	font-family: fixed;
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+a {
+	color: #CC0000;
+	text-decoration: none;
+}
+
+a:link {
+	color: #CCCCCC;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #AAAAAA;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.tmenu {
+	background: #222222;
+	text-decoration: underline;
+	font-weight: 900;
+}
+
+.tableclass {
+	color: #dfdfdf;
+	background: #656565;
+	margin: 0;
+	border-spacing: 0;
+}
+
+.subtableclass {
+	color: #fdfdfd;
+	background: #404040;
+	border-spacing: 5px;
+}
+
+.tblrow2 {
+	background: #201515;
+}
+
+.tblrow1 {
+	background: #302525;
+}
+
+.tblhdr {
+	color: #DDDDDD;
+	background: #600000;
+	font-weight: bold;
+}
+
+.formtoggle1 {
+	background: #201515;
+}
+
+.formtoggle2 {
+	background: #302525;
+}
+
+.formtitle {
+	color: #dddddd;
+	background: #600000;
+	text-align: center;
+	font-weight: bold;
+}
+
+.formsubmit, .formreset {
+	background: #303030;
+	color: #dddddd;
+	border: 0;
+}
+
+.form {
+	border: 0;
+}
+
+.formselect, .forminput, .formtextarea, .formbutton, .formpassword, .formfile, .formcheckbox {
+	background: #101010;
+	color: #dddddd;
+	border: 0;
+}
+
+.formerror, .formerrormsg {
+	background: #ffffff;
+}
+
+.messagebox {
+	color: #cc0000;
+	background: #000000;
+	border: 1;
+}
+
+.scanstbl {
+	color: #dddddd;
+	background: #cc0000;
+	border: 2;
+}

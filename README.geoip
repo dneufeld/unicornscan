@@ -1,0 +1,2 @@
+http://www.maxmind.com/download/geoip/api/c/
+throw the databases into the /usr/local/etc/unicornscan/ directory, or whatever it is..

@@ -1,0 +1,306 @@
+#
+# Macros for the unicornscan domains.
+#
+
+#
+# Authors:  Jack <jack@rapturesecurity.org>
+# this is not current, or done (some of the template was STOLEN from crontab, if you cant tell)
+#
+
+#
+# unicornscan_domain(domain_prefix)
+#
+# Define a derived domain for the unicornscan programs when executed by
+# a user domain.
+#
+# The type declaration for the executable type for this program is
+# provided separately in domains/program/unicornscan.te. 
+#
+undefine(`unicornscan_domain')
+
+define(`unicornscan_domain',`
+# Derived domain based on the calling user domain and the program.
+# master thread, execs 2 helpers
+type $1_unicornscan_t, domain, privlog;
+# this sends with a raw socket
+type $1_unisend_t, domain, privlog;
+# this listens for responses
+type $1_unilisten_t, domain, privlog;
+
+# per derived domain audit trail
+type $1_unicornscan_log_t, file_type, sysadmfile;
+
+# save pcaps inside directories labeled with this
+type $1_unicornscan_rw_t, file_type, sysadmfile;
+
+# Transition from the user domain to the derived domain.
+domain_auto_trans($1_t, unicornscan_exec_t, $1_unicornscan_t)
+
+# the helper programs should never be executed directly.
+domain_auto_trans($1_unicornscan_t, unisend_exec_t, $1_unisend_t)
+domain_auto_trans($1_unicornscan_t, unilisten_exec_t, $1_unilisten_t)
+
+# audit trail for derived domain
+file_type_auto_trans($1_unicornscan_t, unicornscan_log_t, $1_unicornscan_log_t)
+
+# allow user to view config files at least read-only
+allow $1_t unicornscan_share_t:dir r_dir_perms;
+allow $1_t unicornscan_share_t:file r_file_perms;
+
+allow $1_unicornscan_t lib_t:file { getattr read };
+allow $1_unisend_t lib_t:file { getattr read };
+
+# for Ctrl-C
+allow $1_t $1_unicornscan_t:process signal;
+
+# self termination
+allow $1_unicornscan_t self:process { signal fork };
+allow $1_unisend_t self:process { signal };
+allow $1_unilisten_t self:process { signal };
+allow $1_unilisten_t self:capability { kill };
+allow $1_unisend_t self:capability { kill };
+
+# children signaling parent
+allow $1_unilisten_t $1_unicornscan_t:process { signal };
+allow $1_unisend_t $1_unicornscan_t:process { signal };
+
+# urandom reading for seeding prng
+allow $1_unicornscan_t urandom_device_t:chr_file r_file_perms;
+allow $1_unisend_t urandom_device_t:chr_file r_file_perms;
+allow $1_unilisten_t urandom_device_t:chr_file r_file_perms;
+
+# dns and/or net ioctls
+allow $1_unicornscan_t $1_unicornscan_t:udp_socket { create connect write read create ioctl getattr };
+allow $1_unicornscan_t $1_unicornscan_t:unix_stream_socket { create connect setopt shutdown write read };
+allow $1_unilisten_t $1_unilisten_t:udp_socket { ioctl create connect read write };
+allow $1_unicornscan_t netif_t:netif { udp_send udp_recv };
+allow $1_unicornscan_t netif_eth0_t:netif { udp_send udp_recv };
+allow $1_unicornscan_t node_t:node { udp_send udp_recv };
+allow $1_unicornscan_t dns_port_t:udp_socket { send_msg recv_msg };
+allow $1_unicornscan_t netif_lo_t:netif { udp_send udp_recv };
+allow $1_unicornscan_t $1_unicornscan_t:file { read };
+allow $1_unicornscan_t net_conf_t:file { getattr read };
+
+allow $1_unilisten_t net_conf_t:file { getattr read };
+allow $1_unisend_t net_conf_t:file { getattr read };
+
+allow $1_unicornscan_t unicornscan_port_t:tcp_socket name_bind;
+allow $1_unicornscan_t node_lo_t:tcp_socket node_bind;
+allow $1_unicornscan_t self:tcp_socket { listen accept };
+
+
+
+# XXX
+allow $1_unicornscan_t $1_unicornscan_t:dir { search };
+allow $1_unicornscan_t $1_unicornscan_t:file { getattr };
+
+# yah
+allow $1_unilisten_t $1_unilisten_t:file { read getattr };
+allow $1_unisend_t $1_unisend_t:file { read getattr };
+
+# write pcap save files
+allow $1_unicornscan_t $1_home_t:dir { search };
+allow $1_unicornscan_t $1_home_dir_t:dir { search };
+allow $1_unicornscan_t tmp_t:dir { search };
+
+# XXX pass the fd from unicornscan to unilisten to avoid this mess
+allow $1_unilisten_t tmp_t:dir { search };
+allow $1_unilisten_t $1_home_t:dir { search };
+allow $1_unilisten_t $1_home_dir_t:dir { search };
+
+# XXX ummm
+allow $1_unisend_t $1_unicornscan_rw_t:file { write };
+
+file_type_auto_trans($1_unicornscan_t, $1_unicornscan_rw_t, $1_unicornscan_rw_t);
+file_type_auto_trans($1_unilisten_t, $1_unicornscan_rw_t, $1_unicornscan_rw_t);
+
+allow $1_t $1_unicornscan_rw_t:dir rw_dir_perms;
+allow $1_t $1_unicornscan_rw_t:file create_file_perms;
+
+# seems funny doesnt it
+allow $1_unilisten_t $1_unilisten_t:dir { search };
+allow $1_unisend_t $1_unisend_t:dir { search };
+
+# ipc
+allow $1_unicornscan_t $1_unicornscan_t:tcp_socket { setopt getattr read write bind connect ioctl create shutdown getopt };
+allow $1_unicornscan_t node_inaddr_any_t:tcp_socket { node_bind };
+allow $1_unicornscan_t node_lo_t:node { tcp_send tcp_recv udp_send udp_recv };
+allow $1_unicornscan_t netif_lo_t:netif { tcp_recv tcp_send };
+
+allow $1_unilisten_t $1_unilisten_t:tcp_socket { setopt getattr read write bind ioctl create getopt shutdown listen accept };
+allow $1_unilisten_t node_inaddr_any_t:tcp_socket { node_bind };
+allow $1_unilisten_t netif_lo_t:netif { tcp_recv tcp_send };
+allow $1_unilisten_t node_lo_t:node { tcp_recv tcp_send };
+allow $1_unilisten_t node_lo_t:tcp_socket { node_bind };
+
+allow $1_unisend_t $1_unisend_t:tcp_socket { setopt getattr read write bind ioctl create getopt shutdown listen accept };
+allow $1_unisend_t node_inaddr_any_t:tcp_socket { node_bind };
+allow $1_unisend_t netif_lo_t:netif { tcp_recv tcp_send };
+allow $1_unisend_t node_lo_t:node { tcp_recv tcp_send };
+allow $1_unisend_t node_lo_t:tcp_socket { node_bind };
+
+allow $1_unilisten_t self:unix_stream_socket { create setopt bind listen accept shutdown getopt read write };
+allow $1_unisend_t self:unix_stream_socket { create setopt bind listen accept shutdown getopt read write };
+
+allow $1_unicornscan_t $1_unilisten_t:unix_stream_socket { connectto };
+allow $1_unicornscan_t $1_unisend_t:unix_stream_socket { connectto };
+
+allow $1_unilisten_t var_t:dir search;
+allow $1_unisend_t var_t:dir search;
+allow $1_unicornscan_t var_t:dir search;
+
+allow $1_unilisten_t unicornscan_var_t:dir r_dir_perms;
+allow $1_unisend_t unicornscan_var_t:dir r_dir_perms;
+allow $1_unicornscan_t unicornscan_var_t:dir r_dir_perms;
+
+file_type_auto_trans($1_unilisten_t, unicornscan_var_t, unicornscan_ipc_t);
+file_type_auto_trans($1_unisend_t, unicornscan_var_t, unicornscan_ipc_t);
+
+allow $1_unicornscan_t unicornscan_ipc_t:sock_file { read write };
+allow $1_unisend_t unicornscan_ipc_t:sock_file { read write };
+allow $1_unilisten_t unicornscan_ipc_t:sock_file { read write };
+
+
+# open up /proc/net/route cause it requires less permissions
+allow $1_unicornscan_t proc_net_t:dir search;
+allow $1_unicornscan_t proc_net_t:file { read getattr }; 
+
+# configuration files
+allow $1_unisend_t unicornscan_share_t:file r_file_perms;
+allow $1_unisend_t unicornscan_share_t:dir r_dir_perms;
+allow $1_unicornscan_t unicornscan_share_t:file r_file_perms;
+allow $1_unicornscan_t unicornscan_share_t:dir r_dir_perms;
+
+#  allow sender to set priority to 19
+allow $1_unisend_t $1_unisend_t:process { setsched };
+
+# sniffing
+allow $1_unilisten_t $1_unilisten_t:capability { net_raw }; #net_admin };
+allow $1_unilisten_t $1_unilisten_t:packet_socket { bind getopt setopt create read ioctl };
+allow $1_unilisten_t $1_unilisten_t:tcp_socket { shutdown };
+
+# sender
+allow $1_unisend_t $1_unisend_t:rawip_socket { create setopt getopt };
+allow $1_unisend_t $1_unisend_t:capability { net_raw };
+allow $1_unisend_t $1_unisend_t:rawip_socket { write };
+allow $1_unisend_t netif_t:netif { rawip_send };
+allow $1_unisend_t netif_eth0_t:netif { rawip_send };
+allow $1_unisend_t node_t:node { rawip_send };
+# sender needing to ioctl things (arp mode this needs to be removed)
+allow $1_unisend_t $1_unisend_t:udp_socket { ioctl create connect read write };
+# link level sending
+allow $1_unisend_t $1_unisend_t:packet_socket { bind getopt setopt create write ioctl };
+
+# sender over loopback (localhost scanning)
+allow $1_unisend_t netif_lo_t:netif { rawip_send };
+allow $1_unisend_t node_lo_t:node { rawip_send };
+
+# XXX label this
+allow $1_unicornscan_t port_t:tcp_socket { name_bind recv_msg send_msg };
+allow $1_unisend_t port_t:tcp_socket { name_bind recv_msg send_msg };
+allow $1_unilisten_t port_t:tcp_socket { name_bind recv_msg send_msg };
+
+#
+allow $1_unilisten_t security_t:security { check_context };
+allow $1_unisend_t security_t:security { check_context };
+allow $1_unicornscan_t security_t:security { check_context };
+
+# talk to remote database servers
+allow $1_unicornscan_t netif_t:netif { tcp_send tcp_recv };
+allow $1_unicornscan_t netif_eth0_t:netif { tcp_send tcp_recv };
+allow $1_unicornscan_t node_t:node { tcp_send tcp_recv };
+
+allow $1_unicornscan_t $1_unicornscan_t:process { sigchld };
+
+# search /
+allow $1_unilisten_t root_t:dir { search };
+
+allow $1_unilisten_t $1_devpts_t:chr_file { read write getattr };
+allow $1_unisend_t $1_devpts_t:chr_file { read write getattr };
+
+# route lookups, etc
+
+allow $1_unicornscan_t proc_t:dir { search };
+allow $1_unicornscan_t proc_t:file { getattr read };
+allow $1_unicornscan_t proc_t:lnk_file { read };
+
+allow $1_unisend_t proc_t:file { getattr read };
+allow $1_unisend_t proc_t:dir { search };
+allow $1_unisend_t proc_t:lnk_file { read };
+
+allow $1_unilisten_t proc_t:dir { search };
+allow $1_unilisten_t proc_t:lnk_file { read };
+
+allow $1_unicornscan_t var_run_t:dir { search };
+allow $1_unicornscan_t var_t:dir { search };
+
+# allow user to see processes
+can_ps($1_t, $1_unicornscan_t)
+can_ps($1_t, $1_unisend_t)
+can_ps($1_t, $1_unilisten_t)
+
+# The user role is authorized for this domain.
+role $1_r types $1_unicornscan_t;
+role $1_r types $1_unisend_t;
+role $1_r types $1_unilisten_t;
+
+uses_shlib($1_unicornscan_t)
+uses_shlib($1_unisend_t)
+uses_shlib($1_unilisten_t)
+
+allow $1_unicornscan_t shlib_t:file execmod;
+allow $1_unisend_t shlib_t:file execmod;
+
+allow $1_unicornscan_t etc_t:file { getattr read };
+
+# the helpers are setuid root in selinux
+allow $1_unisend_t $1_unisend_t:capability { setuid setgid };
+allow $1_unilisten_t $1_unilisten_t:capability { setuid setgid };
+
+# Access terminals.
+allow $1_unicornscan_t device_t:dir search;
+allow $1_unicornscan_t $1_tty_device_t:chr_file rw_file_perms;
+allow $1_unicornscan_t $1_devpts_t:chr_file rw_file_perms;
+
+# Inherit and use descriptors from gnome-pty-helper.
+ifdef(`gnome-pty-helper.te', `allow $1_unicornscan_t $1_gph_t:fd use;')
+
+# XXX
+allow $1_unicornscan_t privfd:fd use;
+allow $1_unisend_t privfd:fd use;
+allow $1_unilisten_t privfd:fd use;
+
+# quiet
+# dontaudit $1_unicornscan_t sysctl_kernel_t:dir { search };
+# dontaudit $1_unicornscan_t sysctl_t:dir { search };
+# dontaudit $1_unilisten_t security_t:dir { search };
+# dontaudit $1_unilisten_t selinux_config_t:dir { search };
+# dontaudit $1_unisend_t security_t:dir { search };
+# dontaudit $1_unisend_t selinux_config_t:dir { search };
+# dontaudit $1_unisend_t sysctl_kernel_t:dir { search };
+# dontaudit $1_unisend_t sysctl_t:dir { search };
+allow $1_unicornscan_t selinux_config_t:dir search;
+dontaudit $1_unicornscan_t sysctl_kernel_t:dir search;
+dontaudit $1_unicornscan_t sysctl_t:dir search;
+allow $1_unilisten_t security_t:dir search;
+allow $1_unilisten_t selinux_config_t:dir search;
+allow $1_unisend_t security_t:dir search;
+allow $1_unisend_t selinux_config_t:dir search;
+
+dontaudit $1_unisend_t sysctl_kernel_t:dir search;
+dontaudit $1_unisend_t sysctl_t:dir search;
+
+# Access selinuxfs.
+allow $1_unilisten_t security_t:dir { read search getattr };
+allow $1_unilisten_t security_t:file { getattr read write };
+allow $1_unilisten_t security_t:security { check_context compute_av compute_create compute_relabel compute_user };
+
+allow $1_unisend_t security_t:dir { read search getattr };
+allow $1_unisend_t security_t:file { getattr read write };
+allow $1_unisend_t security_t:security { check_context compute_av compute_create compute_relabel compute_user };
+
+ifdef(`postgresql.te', `
+allow $1_unicornscan_t postgresql_port_t:tcp_socket { send_msg recv_msg };
+')
+
+')

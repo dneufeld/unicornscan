@@ -1,0 +1,35 @@
+#ifndef VERSION
+
+#define VERSION "@PACKAGE_VERSION@"
+#define BUGURL "@PACKAGE_BUGREPORT@"
+
+#ifdef WITH_SELINUX
+#define _B_SE " SELinux"
+#else
+#define _B_SE ""
+#endif
+
+#ifdef WITH_MYSQL
+#define _B_MYSQL " MySQL"
+#else
+#define _B_MYSQL ""
+#endif
+
+#ifdef WITH_PGSQL
+#define _B_PGSQL " PostgreSQL"
+#else
+#define _B_PGSQL ""
+#endif
+
+#define BUILDOPTS _B_SE _B_MYSQL _B_PGSQL
+
+#define MODULE_IVER	0x0103 /* 1.02 */
+
+#define DRONE_MAJ	1
+#define DRONE_MIN	1
+
+#define MOD_VERSION(version, maj, min) \
+	maj=(((version) & 0xFF00) >> 8); \
+	min=((version) & 0x00FF)
+
+#endif

@@ -1,0 +1,56 @@
+include ../../Makefile.inc
+
+LS_SRCS=chksum.c connect.c master.c options.c packet_slice.c \
+	payload.c portfunc.c scanopts.c workunits.c makepkt.c report.c
+LS_HDRS=$(LS_SRCS:.c=.h) tcphash.h
+LS_OBJS=$(LS_SRCS:.c=.lo)
+LS_LIBNAME=libscan.la
+
+S_SRCS=send_packet.c init_packet.c
+S_HDRS=$(S_SRCS:.c=.h)
+S_OBJS=$(S_SRCS:.c=.lo)
+
+L_SRCS=recv_packet.c packet_parse.c
+L_HDRS=$(L_SRCS:.c=.h)
+L_OBJS=$(L_SRCS:.c=.lo)
+
+ENTRY=entry.c
+
+G_HDRS=packets.h scan_export.h
+G_LDPATH=-L$(BUILD_DIR)/src/unilib -L$(BUILD_DIR)/src/parse -L$(BUILD_DIR)/src/scan_progs
+G_LDADD=-lscan -lparse -lunilib -lltdl -ldnet -luext
+
+all: $(L_LIBNAME) @sendername@ @listenername@
+
+$(LS_LIBNAME): $(LS_OBJS) $(LS_HDRS)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o $(LS_LIBNAME) $(LS_OBJS)
+
+@sendername@: $(S_OBJS) $(LS_LIBNAME) $(S_HDRS) ../unilib/libunilib.la ../parse/libparse.la $(ENTRY)
+	$(LIBTOOL) --mode=clean rm -f $(ENTRY:.c=.lo)
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -DBUILD_IDENT_SEND=1 -c $(ENTRY)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -export-dynamic -o @sendername@ $(S_OBJS) $(C_OBJS) $(ENTRY:.c=.lo) $(G_LDPATH) $(LDFLAGS) $(G_LDADD)
+
+@listenername@: $(L_OBJS) $(LS_LIBNAME) $(L_HDRS) ../unilib/libunilib.la ../parse/libparse.la $(ENTRY)
+	$(LIBTOOL) --mode=clean rm -f $(ENTRY:.c=.lo)
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -DBUILD_IDENT_RECV=1 -c $(ENTRY)
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -export-dynamic -o @listenername@ $(L_OBJS) $(C_OBJS) $(ENTRY:.c=.lo) $(G_LDPATH) $(LDFLAGS) $(G_LDADD) -lpcap
+
+testsd:
+	cd tests && @USE_MAKE@
+
+install: all
+	mkdir -p $(DESTDIR)/$(libexecdir)/$(TARGETNAME)
+	$(INSTALL_PROGRAM) -m @SP_MODE@ @sendername@ $(DESTDIR)/$(libexecdir)/$(TARGETNAME)
+	$(INSTALL_PROGRAM) -m @SP_MODE@ @listenername@ $(DESTDIR)/$(libexecdir)/$(TARGETNAME)
+	$(CHCON) system_u:object_r:unisend_exec_t $(DESTDIR)/$(libexecdir)/$(TARGETNAME)/@sendername@
+	$(CHCON) system_u:object_r:unilisten_exec_t $(DESTDIR)/$(libexecdir)/$(TARGETNAME)/@listenername@
+
+uninstall:
+	rm -f $(DESTDIR)/$(libexecdir)/$(TARGETNAME)/@sendername@
+	rm -f $(DESTDIR)/$(libexecdir)/$(TARGETNAME)/@listenername@
+
+clean:
+	cd tests && @USE_MAKE@ clean
+	$(LIBTOOL) --mode=clean rm -rf $(S_OBJS) $(L_OBJS) $(LS_OBJS) @sendername@ @listenername@ $(LS_LIBNAME) $(ENTRY:.c=.lo)
+
+distclean: clean

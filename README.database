@@ -1,0 +1,31 @@
+
+The normal configuration of the username/password/host/dbname information is in the "modules.conf" file
+(normally inside $PREFIX/share/unicornscan/modules.conf) there is no way currently to specify database
+parameters from the command line.
+
+see src/output_modules/database:
+mysql_schema.sql pgsql_schema.sql for the basic schemas, for example to install the basic postgres schema do:
+
+# begin semi-example
+$ createdb -U scan_user dbname 
+$ psql -U scan_user dbname < src/output_modules/database/pgsql_schema.sql
+
+then to activate PostgreSQL run your normal command, but with -epgsqldb
+$ unicornscan -epgsqldb -Iv -r 150 -d3 -R3 192.168.1.2/32:q
+
+for this example you can see the following output confirming you have a working database configuration
+`PostgreSQL: Connected to host localhost, database dbname, as user scan_user, with protocol version 3'
+
+the information will be available after the scan has finished (well most of it anyhow)
+the main tables are `scan' and `scan_bucket'
+
+$ psql -U scan -h localhost
+...
+dbname=> select count(scan_id) from scan where e_time != 0;
+ count
+-------
+     7
+(1 row)
+
+template.sql
+the files for the basic schema are mysql_schema and pgsql_schema

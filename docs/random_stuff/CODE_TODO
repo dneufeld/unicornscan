@@ -1,0 +1,25 @@
+
+/*
+ * return 1 if file is readable
+int file_readable(const char * /* file */);
+
+...
+int file_writeable(const char * /* file */);
+
+/*
+ * add s->vi[?]
+int add_vip(...
+
+get rid of dnet requirement
+
+hwaddr should be a link socket structure
+
+pcap should be fully abstracted (more)
+
+arp table gathering
+
+link layer default sockets
+
+all child terminates should ipc over a reson for failure (perhaps inside of the ipc message
+
+all child io should be optionally directed back at master for output, not local

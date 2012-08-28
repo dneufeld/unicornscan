@@ -1,0 +1,59 @@
+include ../Makefile.inc
+
+SRCS=chld.c drone_setup.c getconfig.c main.c usignals.c vip.c
+OBJS=$(SRCS:.c=.lo)
+HDRS=$(SRCS:.c=.h) config.h packageinfo.h settings.h 
+
+G_LDPATH=-L$(BUILD_DIR)/src/unilib -L$(BUILD_DIR)/src/parse -L$(BUILD_DIR)/src/scan_progs
+G_LDADD=$(LDFLAGS) -lscan -lparse -lunilib -lpcap -lltdl -ldnet -luext
+
+# build order matters
+SUBDIRS=unilib parse scan_progs tools payload_modules output_modules report_modules
+
+all: alld @targetname@
+
+@targetname@: compile.h $(OBJS) parse/libparse.la scan_progs/libscan.la unilib/libunilib.la
+	$(LIBTOOL) --mode=link $(CC) -export-dynamic $(CFLAGS) -o @targetname@ $(OBJS) $(G_LDPATH) $(G_LDADD)
+
+compile.h: ../configure
+	CC="$(CC)" ./compiledby.sh > compile.h
+
+alld:
+	@for g in $(SUBDIRS); do \
+		echo "Entering $$g" && cd $$g && @USE_MAKE@ all || exit 1 && cd ..;\
+	done
+
+install: all
+	@for g in $(SUBDIRS); do \
+		echo "Entering $$g" && cd $$g && @USE_MAKE@ install || exit 1 && cd ..;\
+	done
+	mkdir -p $(DESTDIR)/$(bindir)
+	mkdir -p $(DESTDIR)/$(localstatedir)/@targetname@
+	$(INSTALL_PROGRAM) @targetname@ $(DESTDIR)/$(bindir)
+	$(CHCON) system_u:object_r:unicornscan_exec_t $(DESTDIR)/$(bindir)/@targetname@
+	( cd $(DESTDIR)/$(bindir) && ln -sf unicornscan us ) || exit 1
+
+uninstall:
+	@for g in $(SUBDIRS); do \
+		echo "Entering $$g" && cd $$g && @USE_MAKE@ uninstall || exit 1 && cd ..;\
+	done
+	rm -f $(DESTDIR)/$(bindir)/@targetname@
+	rm -f $(DESTDIR)/$(bindir)/us
+
+clean:
+	$(LIBTOOL) --mode=clean rm -f $(OBJS) @targetname@
+	rm -f compile.h
+	@for g in $(SUBDIRS); do \
+		echo "Entering $$g" && cd $$g && @USE_MAKE@ clean || exit 1 && cd ..;\
+	done
+
+distclean: clean
+	@for g in $(SUBDIRS); do \
+		echo "Entering $$g" && cd $$g && @USE_MAKE@ distclean || exit 1 && cd ..;\
+	done
+
+check:
+	for g in `ls test_scripts`; do \
+		echo -e "\nRunning test script $$g\n";\
+		./test_scripts/$$g;\
+	done

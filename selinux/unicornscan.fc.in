@@ -1,0 +1,11 @@
+# unicornscan
+@BINDIR@/unicornscan			--	system_u:object_r:unicornscan_exec_t
+@BINDIR@/fantaip			--	system_u:object_r:netutils_exec_t
+@BINDIR@/unicycle			--	system_u:object_r:netutils_exec_t
+@LIBEXECDIR@/unicornscan(/.*)?		--	system_u:object_r:usr_t
+@LIBDIR@/unicornscan(/.*)?		--	system_u:object_r:lib_t
+@LIBEXECDIR@/unicornscan/unilisten	--	system_u:object_r:unilisten_exec_t
+@LIBEXECDIR@/unicornscan/unisend	--	system_u:object_r:unisend_exec_t
+@LIBDIR@/unicornscan/modules/[a-z0-9]*\.so	--	system_u:object_r:shlib_t
+@SYSCONFDIR@/unicornscan(/.*)?		--	system_u:object_r:unicornscan_share_t
+@LOCALSTATEDIR@/unicornscan(/.*)?	--	system_u:object_r:unicornscan_var_t

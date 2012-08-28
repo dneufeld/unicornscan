@@ -1,0 +1,46 @@
+include ../../Makefile.inc
+
+PROGS=fantaip unibrow unicfgtst
+
+G_LDPATH=-L$(BUILD_DIR)/src/unilib -L$(BUILD_DIR)/libs/fake/lib -L$(BUILD_DIR)/src/scan_progs
+G_LDADD=-lscan -lunilib -lltdl $(LDFLAGS)
+
+all: $(PROGS)
+
+fantaip: fantaip.lo
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o fantaip fantaip.lo $(G_LDPATH) $(G_LDADD) -lpcap -ldnet
+
+unibrow: unibrow.lo
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o unibrow unibrow.lo $(G_LDPATH) $(G_LDADD) -lpcap
+
+unicfgtst: unicfgtst.lo
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o unicfgtst unicfgtst.lo $(G_LDPATH) -L../parse -lparse $(G_LDADD)
+
+fpdb: fpdb.lo p0f/p0f.lo
+	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) @PG_CPPFLAGS@ -o fpdb fpdb.lo p0f/p0f.lo @PG_LDFLAGS@ -lpq  $(G_LDPATH) $(G_LDADD)
+
+fpdb.lo: fpdb.c
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -c @PG_CPPFLAGS@ fpdb.c
+
+p0f/p0f.lo:
+	make -C p0f
+
+clean:
+	$(LIBTOOL) --mode=clean rm -f fantaip fantaip.lo unibrow.lo unibrow unicfgtst.lo unicfgtst fpdb.lo fpdb
+	make -C p0f clean
+
+distclean: clean
+
+install: all
+	mkdir -p $(DESTDIR)/$(bindir)
+	$(INSTALL_PROGRAM) -m 755 fantaip $(DESTDIR)/$(bindir)/
+	$(CHCON) system_u:object_r:netutils_exec_t $(DESTDIR)/$(bindir)/fantaip
+	$(INSTALL_PROGRAM) -m 755 unibrow $(DESTDIR)/$(bindir)/unibrow
+	$(CHCON) system_u:object_r:bin_t $(DESTDIR)/$(bindir)/unibrow
+	$(INSTALL_PROGRAM) -m 755 unicfgtst $(DESTDIR)/$(bindir)/unicfgtst
+	$(CHCON) system_u:object_r:bin_t $(DESTDIR)/$(bindir)/unicfgtst
+
+uninstall:
+	$(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)/$(bindir)/fantaip
+	$(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)/$(bindir)/unibrow
+	$(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)/$(bindir)/unicfgtst

@@ -1,0 +1,1 @@
+make uninstall  and reconfigure with --enable-bundled-ltdl and make install

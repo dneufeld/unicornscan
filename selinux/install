@@ -1,0 +1,8 @@
+#!/bin/sh -x
+
+cat unicornscan_macros.te > /etc/security/selinux/src/policy/macros/program/unicornscan_macros.te
+cat unicornscan.te > /etc/security/selinux/src/policy/domains/program/unicornscan.te
+cat unicornscan.fc > /etc/security/selinux/src/policy/file_contexts/program/unicornscan.fc
+
+(cd /etc/security/selinux/src/policy && make reload)
+make relabel

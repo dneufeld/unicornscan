@@ -1,0 +1,3 @@
+the linker script comes adapted from impurity-1.0 by Alexander E. Cuttergo <cuttergo@gmx.net>
+
+REQUIREMENTS: you need dietlibc installed for the linux payload...

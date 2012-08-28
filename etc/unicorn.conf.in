@@ -1,0 +1,91 @@
+/* this is just an example config file, note the syntax... */
+
+global {
+	pps:			300; /* good for a cable modem */
+	repeats:		1;
+	delaytype:		tsc; /* use gtod or sleep if your tsc is broken */
+
+	/* good for uncovering broken firewalls see http://www.phrack.org/show.php?p=60&a=12 */
+	/* brokencrc:		transport; */
+
+	/* -1 means random, that way you can come from port 0 */
+	sourceport:		-1;
+
+	/* should we make a default (udp) payload for app triggering if we dont have a match? (good idea normally, think bindshell) */
+	defaultpayload:		true;
+
+	/* perhaps not so usefull */
+	/* interface:		"wlan0"; */
+
+	/* watch icmp error codes (or any icmp really) and rsts */
+	procerrors:		false;
+
+	/*
+	 * for the time being see src/FMTCAT_ARGS and know that there are 4 different current formats
+	 * ip: IP reports
+	 * imip: Immediate (-I) IP reports
+	 * arp: ARP reports
+	 * imarp: ...
+	 */
+	format {
+		"ip:%-8r\t%16pn[%5p]\t\tfrom %hn %Tn ttl %t"
+	};
+
+	/* already default */
+	/* moduledir:		"@MODDIR@"; */
+
+	/* good option */
+	immediate:		false;
+
+	/* pcapfilter:		"! port 162"; */
+
+	/* yah well on my laptop this is useless */
+	/* srcaddr:		random; */
+	/* srcaddr:		192.168.13.221; */
+
+	/* this isnt as usefull use the fingerprint option, its less work */
+	/* ipttl:			0xFF; */
+	/* iptos:			0; */
+
+	/* the `%d' will get replaced with a unix timestamp */
+	/* savefile:		"/tmp/save%d.pcap"; */
+
+	/* 0:cisco 1:openbsd 2:windowsxp 4:p0f*/
+	fingerprint:		1;
+
+	/* this can be 0 to some large value, i think 7 is the highest that does anything new */
+	verbose:		0;
+
+	/* syn [Ss] fin [Ff] urg [Uu] psh [Pp] ack [Aa] ece [Ee] cwr [Cc] are possible here */
+	tcpflags:		Sfupaec;
+
+	tcpquickports	{
+		"7,9,11,13,18,19,21-23,25,37,39,42,49,50,53,"
+		"65,67-70,79-81,88,98,100,105-107,109-111,113,118,119,"
+		"123,129,135,137-139,143,150,161-164,174,177-179,191,"
+		"199-202,204,206,209,210,213,220,345,346,347,369-372,"
+		"389,406,407,422,443-445,487,500,512-514,517,518,520,525,533,"
+		"538,548,554,563,587,610-612,631-634,636,642,653,655,657,666,706,750-752,765,"
+		"779,808,873,901,923,941,946,992-995,1001,1023-1030,1080,1210,1214,"
+		"1234,1241,1334,1349,1352,1423-1425,1433,1434,1524,1525,1645,1646,1649,1701,1718,"
+		"1719,1720,1723,1755,1812,1813,2048-2050,2101-2104,2140,2150,2233,2323,2345,2401,2430,2431,"
+		"2432,2433,2583,2628,2776,2777,2988,2989,3050,3130,3150,3232,3306,3389,3456,3493,"
+		"3542-3545,3632,3690,3801,4000,4400,4321,4567,4899,5002,5136-5139,5150,5151,"
+		"5222,5269,5308,5354,5355,5422-5425,5432,5503,5555,5556,5678,6000-6007,"
+		"6346,6347,6543,6544,6789,6838,6666-6670,7000-7009,"
+		"7028,7100,7983,8079-8082,8088,8787,8879,9090,9101-9103,"
+		"9325,9359,10000,10026,10027,10067,10080,10081,10167,10498,11201,15345,17001-17003,"
+		"18753,20011,20012,21554,22273,26274,27374,27444,27573,31335-31338,31787,31789,31790,31791,"
+		"32668,32767-32780,33390,47262,49301,54320,54321,"
+		"57341,58008,58009,58666,59211,60000,60006,61000,61348,61466,61603,63485,63808,63809,64429,"
+		"65000,65506,65530-65535"
+	};
+
+	udpquickports	{
+		"7,9,11,13,17,19,20,37,39,42,49,52-54,65-71,81,111,161,123,136-170,514-518,"
+		"630,631,636-640,650,653,921,1023-1030,1900,2048-2050,27900,27960,32767-32780,32831"
+	};
+};
+
+include "@CONFDIR@/payloads.conf"; /* default udp payloads  */
+include "@CONFDIR@/modules.conf"; /* default udp payloads  */

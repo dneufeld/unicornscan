@@ -1,0 +1,15 @@
+run configure like:
+	./configure --enable-bundled-ltdl (your other options here)
+
+you need to specify the interface to use for your scan if you have issues.
+
+mystery crash (when unisend finishes, doesnt cause scan to be useless, but annoying and nonsensical):
+(gdb) bt
+#0  0x9004310c in kill ()
+#1  0x00016240 in bluescreen (signo=0, si=0x0, not_used=0xa00025b0) at panic.c:104
+#2  <signal handler called>
+#3  0x000037a8 in send_packet () at send_packet.c:571
+#4  0x00002cc4 in send_packet () at send_packet.c:329
+#5  0x38352c36 in ?? ()           <- stack must be trashed?
+(gdb) x/i 0x38352c36
+0x38352c36:     Cannot access memory at address 0x38352c36

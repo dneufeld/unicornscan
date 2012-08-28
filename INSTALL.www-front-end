@@ -1,0 +1,1 @@
+youll need to also run (in addition to src/output_modules/database/sql/pgsql_schema.sql) www-front-end/lib/session.sql and review config.php

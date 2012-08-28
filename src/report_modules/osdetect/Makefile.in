@@ -1,0 +1,30 @@
+include ../../../Makefile.inc
+
+G_LDPATH=-L$(BUILD_DIR)/src/unilib -L$(BUILD_DIR)/src/scan_progs -L$(BUILD_DIR)/src/parse -L$(BUILD_DIR)/src/scan_progs
+CFLAGS += -DMODULE=1
+
+SRCS=dodetect.c module.c
+OBJS=$(SRCS:.c=.lo)
+LIBNAME=osdetect.la
+
+all: $(LIBNAME)
+
+$(LIBNAME): $(HDRS) $(OBJS)
+		$(LIBTOOL) --mode=link $(CC) $(MODCLFLAGS) $(CFLAGS) @MY_CPPFLAGS@ -o $(LIBNAME) $(OBJS) @MY_LDFLAGS@ $(G_LDPATH) -lunilib -lscan
+
+clean:
+	$(LIBTOOL) --mode=clean rm -f $(OBJS) $(LIBNAME)
+
+distclean: clean
+
+install: all
+	mkdir -p $(DESTDIR)/$(MODDIR)
+	$(LIBTOOL) --mode=install $(INSTALL_PROGRAM) -m 755 $(LIBNAME) $(DESTDIR)/$(MODDIR)/;
+	if test -f $(DESTDIR)/$(MODDIR)/$(LIBNAME:.la=.so); then \
+		$(CHCON) system_u:object_r:shlib_t $(DESTDIR)/$(MODDIR)/$(LIBNAME:.la=.so); \
+		$(CHCON) system_u:object_r:unicornscan_share_t $(DESTDIR)/$(MODDIR)/$(LIBNAME); \
+	fi
+	$(LIBTOOL) --mode=finish $(DESTDIR)/$(MODDIR)
+
+uninstall:
+	$(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)/$(MODDIR)/$(LIBNAME)
